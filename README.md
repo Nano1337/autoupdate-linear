@@ -6,6 +6,11 @@ Notes:
 - this must be used locally on Mac (as far as it's been tested). 
 - This is an MVP, so please lmk or contribute if you want more features/better UX!
 
+## Usage
+
+Run setup below and then regular usage in claude code would be `/project:linear-standup path/standup-notes.md`.
+- Standup notes markdown file should be based off the template `meeting_notes/LINEAR_UPDATE_TEMPLATE.md`.
+
 ## Setup
 
 1. Install npm (search this up) and claude code using: 
@@ -31,4 +36,25 @@ claude mcp add --transport sse Linear https://mcp.linear.app/sse
 4. Authenticate into Linear MCP by first running `yolo` to get your claude instance started and inside claude code, write `/mcp` to authenticate the Linear MCP from your side. 
 You can test that the Linear MCP works by running inside claude code: `run this Linear:list_projects, Linear:list_teams`
 
-5. 
+## Custom Slash Commands
+
+### Linear Standup Automation
+
+Automate Linear ticket updates from natural language standup notes using advanced NLP parsing.
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `/project:linear-standup` | Parse standup notes and auto-create/update Linear tickets | `/project:linear-standup standup-notes.md` |
+| `/project:linear-dry-run` | Preview Linear updates without making changes | `/project:linear-dry-run standup-notes.md` |
+| `/project:linear-test` | Test Linear MCP connection and show workspace info | `/project:linear-test` |
+| `/project:linear-workspace` | Show detailed Linear workspace structure | `/project:linear-workspace` |
+| `/project:linear-fix` | Diagnose and fix Linear automation issues | `/project:linear-fix "error description"` |
+
+**Features:**
+- Intelligent parsing of natural language updates and TODOs
+- Automatic @ mention mapping to Linear users
+- Context-aware priority detection from urgency keywords
+- Smart status updates based on progress indicators
+- Comprehensive error handling and validation
+
+**Requirements:** Linear MCP must be connected (`/mcp` to verify)
