@@ -1,60 +1,150 @@
-# Autoupdate Linear
+# 🚀 Autoupdate Linear
 
-Saves you from the manual slog of updating your linear issues. If you can do it, so can claude code!
+> Transform your meeting notes into Linear tickets automatically with Claude Code's intelligent parsing
 
-Notes: 
-- this must be used locally on Mac (as far as it's been tested). 
-- This is an MVP, so please lmk or contribute if you want more features/better UX!
+## Overview
 
-## Usage
+Autoupdate Linear eliminates the manual work of creating and updating Linear issues from standup meetings. Simply paste your meeting notes in a natural language format, and Claude Code will:
 
-Run setup below and then regular usage in claude code would be `/project:linear-standup path/standup-notes.md`.
-- Standup notes markdown file should be based off the template `meeting_notes/LINEAR_UPDATE_TEMPLATE.md`.
+- 🎯 Extract action items and TODOs
+- 👤 Map team member mentions to Linear users
+- 📊 Set priorities based on urgency keywords
+- 🔄 Update existing tickets with progress
+- ✨ Create new tickets with full context
 
-## Setup
+**Platform Support:** macOS (tested)  
+**Status:** MVP - Contributions welcome!
 
-1. Install npm (search this up) and claude code using: 
+## 📋 Prerequisites
+
+- 🍎 macOS
+- 🤖 Claude MAX subscription (not API)
+- 📝 Granola AI app (or similar) for meeting transcripts
+- 📊 Linear account with MCP access
+
+## 🛠️ Setup Guide
+
+### 1. Install Claude Code
+First, ensure you have Node.js and npm installed, then:
+
 ```bash 
 npm install -g @anthropic-ai/claude-code
 claude
 ```
-and authenticate using your MAX plan (do not use claude API). Cmd+C out of claude code once basic setup is done.
 
-2. Run this command to add this alias to your `~/.zshrc`: 
+📌 **Important:** Authenticate with your Claude MAX subscription (not API key). Exit with `Cmd+C` after initial setup.
+
+### 2. Configure Auto-permissions
+Add this convenience alias to skip permission prompts:
+
 ```bash
 grep -qxF 'alias yolo="claude --dangerously-skip-permissions"' ~/.zshrc \
   || echo 'alias yolo="claude --dangerously-skip-permissions"' >> ~/.zshrc
 source ~/.zshrc
 ```
-Don't worry, claude won't do anything unaligned (and if it does, the downsides are minimal), this is just so claude code doesn't ask permission to run every command
 
-3. Add linear remote MCP using:
+💡 **Note:** This alias allows Claude Code to run commands without asking permission each time. It's safe for local development use.
+
+### 3. Connect Linear MCP
+Add the Linear Model Context Protocol connection:
+
 ```bash 
 claude mcp add --transport sse Linear https://mcp.linear.app/sse
 ```
 
-4. Authenticate into Linear MCP by first running `yolo` to get your claude instance started and inside claude code, write `/mcp` to authenticate the Linear MCP from your side. 
-You can test that the Linear MCP works by running inside claude code: `run this Linear:list_projects, Linear:list_teams`
+### 4. Authenticate Linear
+1. Start Claude Code with: `yolo`
+2. Inside Claude Code, type `/mcp` to authenticate Linear
+3. Test the connection with:
+   ```
+   run this Linear:list_projects, Linear:list_teams
+   ```
 
-## Custom Slash Commands
+## 🚀 Quick Start
 
-### Linear Standup Automation
+### 1. Record Your Meeting
+Use Granola AI (or similar tool) to capture your meeting transcript
 
-Automate Linear ticket updates from natural language standup notes using advanced NLP parsing.
+### 2. Create Meeting Notes
+Copy the template from `meeting_notes/LINEAR_UPDATE_TEMPLATE.md` and paste your transcript
 
-| Command | Description | Usage |
-|---------|-------------|-------|
-| `/project:linear-standup` | Parse standup notes and auto-create/update Linear tickets | `/project:linear-standup standup-notes.md` |
-| `/project:linear-dry-run` | Preview Linear updates without making changes | `/project:linear-dry-run standup-notes.md` |
-| `/project:linear-test` | Test Linear MCP connection and show workspace info | `/project:linear-test` |
-| `/project:linear-workspace` | Show detailed Linear workspace structure | `/project:linear-workspace` |
-| `/project:linear-fix` | Diagnose and fix Linear automation issues | `/project:linear-fix "error description"` |
+### 3. Run the Command
+In Claude Code, execute:
+```
+/project:linear-standup meeting_notes/your-standup-2025-07-01.md
+```
 
-**Features:**
-- Intelligent parsing of natural language updates and TODOs
-- Automatic @ mention mapping to Linear users
-- Context-aware priority detection from urgency keywords
-- Smart status updates based on progress indicators
-- Comprehensive error handling and validation
+### 4. Review Results
+Claude will show you:
+- ✅ Tickets created
+- 🔄 Tickets updated
+- 👥 User assignments
+- 📊 Priority levels set
 
-**Requirements:** Linear MCP must be connected (`/mcp` to verify)
+## 🎯 Available Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| **📝 linear-standup** | Process meeting notes and update Linear | `/project:linear-standup notes.md` |
+| **👀 linear-dry-run** | Preview changes without updating Linear | `/project:linear-dry-run notes.md` |
+| **🔍 linear-test** | Verify Linear connection | `/project:linear-test` |
+| **🏢 linear-workspace** | Display workspace structure | `/project:linear-workspace` |
+| **🔧 linear-fix** | Troubleshoot issues | `/project:linear-fix "error msg"` |
+
+## ✨ Key Features
+
+### Intelligent Parsing
+- 🧠 **Natural Language Processing**: Understands conversational meeting notes
+- 🎯 **Action Item Detection**: Finds TODOs even when not explicitly marked
+- 👤 **Smart User Mapping**: Matches @mentions to Linear users automatically
+- ⏰ **Priority Detection**: Recognizes urgency keywords (ASAP, EOD, urgent)
+- 📅 **Date Parsing**: Converts "next Friday" to actual dates
+
+### Ticket Management
+- 🔄 Updates existing tickets mentioned in notes
+- ✨ Creates new tickets from action items
+- 💬 Adds context and discussion points
+- 🏷️ Sets appropriate labels and priorities
+- 📎 Links related tickets together
+
+## 📚 Meeting Notes Template
+
+The template (`meeting_notes/LINEAR_UPDATE_TEMPLATE.md`) includes sections for:
+
+1. **Project Information** - Meeting metadata
+2. **Updates Since Last Time** - Progress on existing work
+3. **Discussion Points** - Meeting transcript from Granola AI
+4. **Immediate TODOs** - Action items with assignees
+5. **Notes for Next Time** - Follow-up items
+
+💡 **Pro Tip:** Write naturally! The parser understands conversational language, so focus on capturing the discussion rather than formatting.
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Linear MCP not connected**
+- Run `/mcp` in Claude Code to reconnect
+- Verify with `/project:linear-test`
+
+**User not found**
+- Check spelling of @mentions
+- Use `/project:linear-workspace` to see all users
+- The parser uses fuzzy matching but exact names work best
+
+**Tickets not creating**
+- Ensure you have a valid project selected
+- Check team permissions in Linear
+- Use `/project:linear-dry-run` to preview first
+
+## 🤝 Contributing
+
+This is an MVP - contributions are welcome! Feel free to:
+- Report bugs
+- Suggest features
+- Submit pull requests
+- Improve documentation
+
+## 📄 License
+
+MIT
